@@ -1,0 +1,212 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                     String   @id @default(cuid())
+  email                  String   @unique
+  name                   String?
+  password               String?
+
+  accountType            String   // "client" | "business"
+
+  stripeCustomerId       String?  @unique
+  stripeSubscriptionId   String?
+  subscriptionStatus     String?
+  subscriptionPlan       String?
+
+  // 👇 Organisations this user OWNS
+  ownedOrganisations     Organisation[] @relation("OrganisationOwner")
+
+  // 👇 Organisations this user BELONGS TO (legacy implicit M2M)
+  organisations          Organisation[] @relation("OrganisationUsers")
+
+  // 👇 Explicit membership records with roles
+  memberships            OrganisationMembership[]
+
+  // 👇 Email invites accepted by this user
+  acceptedEmailInvites   EmailInvite[]
+
+  // 👇 Code invites accepted by this user
+  acceptedCodeInvites    CodeInvite[]
+
+  meetingRequests        MeetingRequest[] @relation("MeetingRequestClient")
+
+  // 👇 Bookings as client
+  clientBookings         Booking[] @relation("BookingClient")
+
+  // 👇 Bookings as assigned member/staff
+  memberBookings         Booking[] @relation("BookingMember")
+
+  // 👇 In-app notifications
+  notifications          Notification[]
+
+  // 👇 Password reset tokens
+  passwordResetTokens    PasswordResetToken[]
+
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
+
+model Organisation {
+  id                    String   @id @default(uuid())
+  name                  String
+
+  // 👇 Owner relation (one-to-many)
+  ownerUserId           String
+  owner                 User     @relation("OrganisationOwner", fields: [ownerUserId], references: [id])
+
+  stripeCustomerId      String?
+  stripeSubscriptionId  String?
+  plan                  Plan?
+  subscriptionStatus    String?
+
+  // 👇 Members relation (legacy implicit M2M)
+  users                 User[]   @relation("OrganisationUsers")
+
+  // 👇 Explicit membership records with roles
+  memberships           OrganisationMembership[]
+
+  invites               Invite[]
+  emailInvites          EmailInvite[]
+  codeInvites           CodeInvite[]
+  meetingRequests       MeetingRequest[]
+  bookings              Booking[]
+
+  createdAt             DateTime @default(now())
+}
+
+// Explicit org membership with role
+model OrganisationMembership {
+  id             String       @id @default(cuid())
+  organisationId String
+  organisation   Organisation @relation(fields: [organisationId], references: [id])
+  userId         String
+  user           User         @relation(fields: [userId], references: [id])
+  role           OrgRole
+
+  createdAt      DateTime     @default(now())
+
+  @@unique([organisationId, userId])
+}
+
+model Invite {
+  id             String       @id @default(cuid())
+  token          String       @unique @default(cuid())
+  organisationId String
+  organisation   Organisation @relation(fields: [organisationId], references: [id])
+  usageCount     Int          @default(0)
+  createdAt      DateTime     @default(now())
+}
+
+model EmailInvite {
+  id             String       @id @default(cuid())
+  token          String       @unique @default(cuid())
+  organisationId String
+  organisation   Organisation @relation(fields: [organisationId], references: [id])
+  email          String
+  role           OrgRole
+  acceptedAt     DateTime?
+  acceptedUserId String?
+  acceptedUser   User?        @relation(fields: [acceptedUserId], references: [id])
+  createdAt      DateTime     @default(now())
+}
+
+model MeetingRequest {
+  id             String       @id @default(cuid())
+  clientId       String
+  client         User         @relation("MeetingRequestClient", fields: [clientId], references: [id])
+  organisationId String
+  organisation   Organisation @relation(fields: [organisationId], references: [id])
+  message        String?
+  recipientIds   String[]
+  createdAt      DateTime     @default(now())
+}
+
+model Booking {
+  id                String        @id @default(cuid())
+  organisationId    String
+  organisation      Organisation  @relation(fields: [organisationId], references: [id])
+  clientId          String
+  client            User          @relation("BookingClient", fields: [clientId], references: [id])
+  memberId          String
+  member            User          @relation("BookingMember", fields: [memberId], references: [id])
+  reason            String
+  startTime         DateTime
+  endTime           DateTime
+  status            BookingStatus @default(PENDING)
+  notes             String?
+  internalNotes     String?
+  clientAcceptedAt  DateTime?
+  memberAcceptedAt  DateTime?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+}
+
+enum OrgRole {
+  OWNER
+  MEMBER
+  CLIENT
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  RESCHEDULED
+  CANCELLED
+}
+
+enum Plan {
+  STARTER
+  GROWTH
+  PRO
+}
+
+model CodeInvite {
+  id             String       @id @default(cuid())
+  code           String       @unique
+  organisationId String
+  organisation   Organisation @relation(fields: [organisationId], references: [id])
+  role           OrgRole
+  createdAt      DateTime     @default(now())
+  usedAt         DateTime?
+  usedByUserId   String?
+  usedByUser     User?        @relation(fields: [usedByUserId], references: [id])
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  type      String
+  title     String
+  body      String
+  href      String?
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  token     String    @unique @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+}
+
+model WaitlistEntry {
+  id          String   @id @default(cuid())
+  email       String   @unique
+
+  verifyToken String   @unique @default(cuid())
+  verifiedAt  DateTime?
+
+  createdAt   DateTime @default(now())
+  emailedAt   DateTime?
+}

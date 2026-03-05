@@ -1,0 +1,21 @@
+# pack-refs with: peeled fully-peeled sorted 
+2f48d10e5c7f17dff02afb228aeb4fbb1c09cdce refs/heads/copilot/audit-and-update-website-compliance
+45ae4e63340168a2a8a8e1302922c91591a9f856 refs/heads/copilot/implement-membership-pricing-features
+304b37ca540b1ac729ded8f770ce1026de8b9d44 refs/heads/copilot/refactor-nextjs-route-groups
+da375e254a1ca7d278175595f709487e75675a45 refs/heads/feature/landing-page
+91c896f4223ce0d73ccae02d40a138ad87c12b75 refs/heads/feature/route-groups
+e6cb831f58e9d260c55649082a8761036ce6d4e0 refs/heads/feature/waitlist-database
+35fc384a0f4c695e713eab2024a2ba12d90e3f03 refs/heads/main
+88953bcb589612d267e472b210ae9d62f6f03840 refs/heads/main#
+d05051c6641b67013d21b5c238d4085de1dae23b refs/heads/styles/updated-book-styles
+3e8c4d935b2cd7f6ef265bab016e9e899ede7a07 refs/heads/styles/updated-clients-styles
+88953bcb589612d267e472b210ae9d62f6f03840 refs/heads/styles/updated-dashboard-styles
+f178286dcc35d821a409ad88012b5f77b06b840d refs/heads/styles/updated-forgot-password-styles
+8c919bb01c6d17ea6605a6f52f533977e333f0e2 refs/heads/styles/updated-invite-styles
+35fc384a0f4c695e713eab2024a2ba12d90e3f03 refs/heads/styles/updated-join-styles
+dc7ae0390ad929e7cdddd1dea6cc724a0f01be06 refs/heads/styles/updated-login-style
+f65908e9ddd31fc4b02df83f76b79b30af2eca78 refs/heads/styles/updated-notifications-styles
+28fb36282df3960133dc426899f972fe407ad6f6 refs/heads/styles/updated-profile-styles
+f43996d005ce1fd089e444ea367816846967d70e refs/heads/styles/updated-register-styles
+1b82560cb2276abef557960509c2f55e919c737e refs/heads/styles/updated-reset-password-styles
+17723c8dceb92243d1ba4e80ba471b4390333160 refs/heads/styles/updated-settings-styles
