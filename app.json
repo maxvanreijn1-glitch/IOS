@@ -1,0 +1,21 @@
+{
+  "expo": {
+    "name": "YourAppName",
+    "slug": "your-app-slug",
+    "version": "1.0.0",
+    "sdkVersion": "46.0.0",
+    "platforms": ["ios", "android"],
+    "ios": {
+      "bundleIdentifier": "com.yourname.yourapp"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
