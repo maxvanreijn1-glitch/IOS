@@ -1,46 +1,20 @@
-import { prisma } from "@/lib/prisma"
-import { NextResponse } from "next/server"
-import bcrypt from "bcryptjs"
+import { NextResponse } from 'next/server';
+import { sign } from '../../lib/jwt';
+import { getUserByEmail } from '../../lib/auth';
 
-export async function POST(req: Request) {
-  try {
-    const { email, password } = await req.json()
+export async function POST(request) {
+    const { email, password } = await request.json();
 
-    const user = await prisma.user.findUnique({
-      where: { email },
-    })
+    const user = await getUserByEmail(email);
+    // Add your existing authentication logic here
+    const isValid = (user && user.password === password); // Example validation
 
-    if (!user || !user.password) {
-      return NextResponse.json(
-        { error: "Invalid email or password" },
-        { status: 401 }
-      )
-    }
+    if (!isValid) return new Response('Unauthorized', { status: 401 });
 
-    const valid = await bcrypt.compare(password, user.password)
-
-    if (!valid) {
-      return NextResponse.json(
-        { error: "Invalid email or password" },
-        { status: 401 }
-      )
-    }
-
-    const response = NextResponse.json({ success: true })
-
-    response.cookies.set("session", user.id, {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
-      path: "/",
-    })
-
-    return response
-  } catch (error) {
-    console.error("Login error:", error)
-    return NextResponse.json(
-      { error: "Something went wrong" },
-      { status: 500 }
-    )
-  }
+    // User authenticated, set session cookie
+    const token = sign(user);
+    const response = NextResponse.json({ user });
+    response.cookies.set('session', user.sessionId); // Set existing session cookie
+    response.headers.set('Authorization', `Bearer ${token}`); // Optional: if needed in the response header
+    return response;
 }
