@@ -1,1 +1,0 @@
-{\n  "expo": {\n    "name": "Meetings Managed",\n    "slug": "meetings-managed",\n    "sdkVersion": "48.0.0",\n    "ios": {\n      "bundleIdentifier": "com.meetingsmanaged.app"\n    },\n    "extra": {\n      "START_URL": "https://meetings-managed.com/login"\n    }\n  }\n}
