@@ -1,35 +1,28 @@
 {
   "name": "meetings-managed",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "main": "App.tsx",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint",
-    "postinstall": "prisma generate"
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "prebuild": "expo prebuild",
+    "prebuild:ios": "expo prebuild --platform ios",
+    "web:dev": "cd web && npm run dev",
+    "web:build": "cd web && npm run build",
+    "web:start": "cd web && npm run start"
   },
   "dependencies": {
-    "@prisma/adapter-pg": "^7.4.1",
-    "@prisma/client": "^7.4.1",
-    "bcryptjs": "^3.0.3",
-    "dotenv": "^17.3.1",
-    "lucide-react": "^0.575.0",
-    "next": "16.1.6",
-    "next-themes": "^0.4.6",
-    "prisma": "^7.4.1",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "stripe": "^20.3.1"
+    "expo": "~52.0.46",
+    "expo-status-bar": "~2.0.1",
+    "react": "18.3.1",
+    "react-native": "0.76.9"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^10.0.1",
-    "eslint-config-next": "^0.2.4",
-    "tailwindcss": "^4",
-    "typescript": "5.9.3"
+    "@babel/core": "^7.25.2",
+    "@types/react": "~18.3.12",
+    "typescript": "~5.3.3"
   }
 }
