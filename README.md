@@ -1,6 +1,37 @@
 # Meetings Managed
 
-A meeting scheduling and management platform built with **Expo + React Native** (iOS/Android) and **Next.js** (web).
+A **100% native** meeting scheduling and management app built with **Expo + React Native** (iOS & Android) and **Next.js** (web).
+
+---
+
+## Mobile App — Screens
+
+| Screen | Description |
+|---|---|
+| **Login** | Email/password form with basic validation. Any email + 6+ char password signs you in. |
+| **Meetings List** | `FlatList` of all meetings with status indicators (upcoming / completed / cancelled). |
+| **Meeting Details** | Full meeting info — date, duration, organiser, location, description — plus Accept/Decline actions for upcoming meetings. |
+| **Settings** | Signed-in user info, app version, and Sign Out button. |
+
+### Architecture
+
+```
+src/
+├── context/
+│   └── AuthContext.tsx         # Auth state (sign in / sign out)
+├── data/
+│   └── meetings.ts            # In-memory mock meetings + helper fns
+├── navigation/
+│   ├── types.ts               # TypeScript param lists for all stacks
+│   ├── AuthStack.tsx          # Unauthenticated stack (Login)
+│   ├── AppTabs.tsx            # Authenticated tabs (Meetings + Settings)
+│   └── RootNavigator.tsx      # Switches between Auth/App based on auth state
+└── screens/
+    ├── LoginScreen.tsx
+    ├── MeetingsListScreen.tsx
+    ├── MeetingDetailsScreen.tsx
+    └── SettingsScreen.tsx
+```
 
 ---
 
@@ -11,9 +42,7 @@ A meeting scheduling and management platform built with **Expo + React Native** 
 ├── App.tsx                 # Expo/React Native entry point
 ├── app.config.ts           # Expo configuration
 ├── babel.config.js         # Babel config for Expo
-├── src/
-│   └── screens/
-│       └── HomeScreen.tsx  # Main React Native screen
+├── src/                    # Native app source (see above)
 ├── assets/                 # App icons, splash screens
 ├── web/                    # Next.js web application
 │   ├── app/                # Next.js App Router pages
@@ -53,6 +82,8 @@ npm run start        # Start Metro bundler
 npm run ios          # Open iOS simulator
 npm run android      # Open Android emulator
 ```
+
+> **Sign in:** Enter any valid email address and a password of 6+ characters on the Login screen.
 
 ### Generate native iOS project (Xcode)
 
