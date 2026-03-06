@@ -49,7 +49,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const logout = async () => {
-    await fetch('/api/auth/logout', { method: 'POST' })
+    const base = typeof window !== 'undefined' && (window as any).MEETFLOW_API_BASE
+      ? (window as any).MEETFLOW_API_BASE as string
+      : '';
+    await fetch(`${base}/api/auth/logout`, { method: 'POST', credentials: 'include' })
     setUser(null)
   }
 

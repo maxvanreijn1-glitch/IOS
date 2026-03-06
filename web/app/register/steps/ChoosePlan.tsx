@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRegister } from '@/context/RegisterContext';
 import BackButton from '@/components/BackButton';
+import { getApiBase } from '@/lib/api-client';
 
 export default function ChoosePlan() {
   const { setSelectedPlan } = useRegister();
@@ -11,9 +12,10 @@ export default function ChoosePlan() {
   const handlePlan = async (plan: string) => {
     setLoading(plan);
     setSelectedPlan(plan);
-    const res = await fetch('/api/stripe/create-checkout-session', {
+    const res = await fetch(`${getApiBase()}/api/stripe/create-checkout-session`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify({ plan }),
     });
     const data = await res.json();

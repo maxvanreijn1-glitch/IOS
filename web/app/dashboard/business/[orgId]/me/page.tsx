@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { getApiBase } from '@/lib/api-client';
 
 interface Booking {
   id: string;
@@ -29,7 +30,7 @@ export default function MemberDashboardPage() {
   }>({ startTime: '', endTime: '', reason: '', notes: '' });
 
   useEffect(() => {
-    fetch(`/api/bookings?orgId=${orgId}`)
+    fetch(`${getApiBase()}/api/bookings?orgId=${orgId}`, { credentials: 'include' })
       .then((r) => r.json())
       .then((data) => {
         if (data.error) {
@@ -54,9 +55,10 @@ export default function MemberDashboardPage() {
   };
 
   const saveEdit = async (id: string) => {
-    const res = await fetch(`/api/bookings/${id}`, {
+    const res = await fetch(`${getApiBase()}/api/bookings/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify({
         startTime: new Date(editForm.startTime).toISOString(),
         endTime: new Date(editForm.endTime).toISOString(),
@@ -79,7 +81,7 @@ export default function MemberDashboardPage() {
   };
 
   const acceptBooking = async (id: string) => {
-    const res = await fetch(`/api/bookings/${id}/accept`, { method: 'POST' });
+    const res = await fetch(`${getApiBase()}/api/bookings/${id}/accept`, { method: 'POST', credentials: 'include' });
     if (!res.ok) {
       const data = await res.json();
       setError(data.error || 'Failed to accept booking');
@@ -93,7 +95,7 @@ export default function MemberDashboardPage() {
 
   const cancelBooking = async (id: string) => {
     if (!confirm('Cancel this booking?')) return;
-    const res = await fetch(`/api/bookings/${id}/cancel`, { method: 'POST' });
+    const res = await fetch(`${getApiBase()}/api/bookings/${id}/cancel`, { method: 'POST', credentials: 'include' });
     if (!res.ok) {
       const data = await res.json();
       setError(data.error || 'Failed to cancel booking');

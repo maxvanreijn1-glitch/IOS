@@ -9,6 +9,7 @@ import {
   Link as LinkIcon,
   AlertCircle,
 } from 'lucide-react';
+import { getApiBase } from '@/lib/api-client';
 
 interface Props {
   orgId: string;
@@ -32,9 +33,10 @@ export default function InviteByCodeForm({ orgId }: Props) {
     setCopied(false);
 
     try {
-      const res = await fetch(`/api/organisations/${orgId}/invites/code`, {
+      const res = await fetch(`${getApiBase()}/api/organisations/${orgId}/invites/code`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ role }),
       });
 

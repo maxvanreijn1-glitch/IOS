@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from "react"
+import { getApiBase } from "@/lib/api-client"
 
 export function WaitlistSection() {
   const [email, setEmail] = useState("")
@@ -15,9 +16,10 @@ export function WaitlistSection() {
     setStatus("loading")
 
     try {
-      const res = await fetch("/api/waitlist", {
+      const res = await fetch(`${getApiBase()}/api/waitlist`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: 'include',
         body: JSON.stringify({ email }),
       })
 

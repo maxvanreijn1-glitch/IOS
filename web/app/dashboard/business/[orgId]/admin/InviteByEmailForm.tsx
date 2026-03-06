@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Send, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+import { getApiBase } from '@/lib/api-client';
 
 interface Props {
   orgId: string;
@@ -21,9 +22,10 @@ export default function InviteByEmailForm({ orgId }: Props) {
     setErrorMsg(null);
 
     try {
-      const res = await fetch(`/api/organisations/${orgId}/invites/email`, {
+      const res = await fetch(`${getApiBase()}/api/organisations/${orgId}/invites/email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ email, role }),
       });
 

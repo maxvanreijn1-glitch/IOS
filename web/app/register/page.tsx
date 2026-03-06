@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { getApiBase } from '@/lib/api-client';
 
 type AccountType = 'client' | 'business' | null;
 type Step = 'choose' | 'pricing' | 'form';
@@ -47,9 +48,10 @@ function RegisterPageInner() {
       setProcessing(true);
       setSelectedPlan(plan);
 
-      const res = await fetch('/api/stripe/create-checkout-session', {
+      const res = await fetch(`${getApiBase()}/api/stripe/create-checkout-session`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ plan }),
       });
 
@@ -89,9 +91,10 @@ function RegisterPageInner() {
 
     try {
       setProcessing(true);
-      const res = await fetch('/api/auth/register', {
+      const res = await fetch(`${getApiBase()}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
