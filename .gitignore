@@ -42,3 +42,12 @@ yarn-error.log*
 next-env.d.ts
 
 /lib/generated/prisma
+
+# mobile app
+mobile/node_modules/
+mobile/.expo/
+mobile/dist/
+mobile/android/
+mobile/ios/
+mobile/.env
+
