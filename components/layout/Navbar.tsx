@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import { useEffect, useState } from 'react';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { getApiBase } from '@/lib/api-client';
 
 export default function Navbar() {
   const { user } = useAuth();
@@ -12,7 +13,7 @@ export default function Navbar() {
 
   useEffect(() => {
     if (!user) return;
-    fetch('/api/notifications')
+    fetch(`${getApiBase()}/api/notifications`, { credentials: 'include' })
       .then((r) => r.json())
       .then((data) => {
         if (typeof data.unreadCount === 'number')

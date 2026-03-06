@@ -6,6 +6,7 @@ import Link from "next/link"
 import Sidebar from "@/components/layout/Sidebar"
 import Navbar from "@/components/layout/Navbar"
 import { useAuth } from "@/context/AuthContext"
+import { getApiBase } from "@/lib/api-client"
 
 interface Notification {
   id: string
@@ -31,7 +32,7 @@ export default function NotificationsPage() {
 
   useEffect(() => {
     if (!user) return
-    fetch("/api/notifications")
+    fetch(`${getApiBase()}/api/notifications`, { credentials: 'include' })
       .then((r) => r.json())
       .then((data) => {
         if (data.notifications) setNotifications(data.notifications)
@@ -40,7 +41,7 @@ export default function NotificationsPage() {
   }, [user])
 
   const markRead = async (id: string) => {
-    await fetch(`/api/notifications/${id}/read`, { method: "POST" })
+    await fetch(`${getApiBase()}/api/notifications/${id}/read`, { method: "POST", credentials: 'include' })
     setNotifications((prev) =>
       prev.map((n) => (n.id === id ? { ...n, readAt: new Date().toISOString() } : n))
     )

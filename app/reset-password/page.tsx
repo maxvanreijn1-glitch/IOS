@@ -4,6 +4,7 @@ import { useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { getApiBase } from '@/lib/api-client';
 
 function ResetPasswordForm() {
   const searchParams = useSearchParams();
@@ -48,9 +49,10 @@ function ResetPasswordForm() {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/auth/reset-password', {
+      const res = await fetch(`${getApiBase()}/api/auth/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ token, password }),
       });
 

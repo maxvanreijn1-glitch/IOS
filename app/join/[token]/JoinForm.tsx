@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { getApiBase } from "@/lib/api-client"
 
 interface Props {
   token: string
@@ -22,9 +23,10 @@ export default function JoinForm({ token, email, orgName }: Props) {
     setLoading(true)
 
     try {
-      const res = await fetch(`/api/join/${token}`, {
+      const res = await fetch(`${getApiBase()}/api/join/${token}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: 'include',
         body: JSON.stringify({ name, password }),
       })
 

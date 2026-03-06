@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/context/AuthContext"
+import { getApiBase } from "@/lib/api-client"
 
 export default function SettingsPage() {
   const { user, logout } = useAuth()
@@ -19,7 +20,7 @@ export default function SettingsPage() {
     setDeleteError(null)
 
     try {
-      const res = await fetch("/api/auth/account", { method: "DELETE" })
+      const res = await fetch(`${getApiBase()}/api/auth/account`, { method: "DELETE", credentials: 'include' })
       if (!res.ok) {
         const data = await res.json().catch(() => ({}))
         throw new Error(data.error || "Failed to delete account")
