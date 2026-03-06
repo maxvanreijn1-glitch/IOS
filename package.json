@@ -1,15 +1,22 @@
 {
   "name": "meetings-managed",
   "version": "1.0.0",
-  "main": "App.tsx",
   "private": true,
+  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
+    "start:clear": "expo start -c",
+
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+
     "prebuild": "expo prebuild",
     "prebuild:ios": "expo prebuild --platform ios",
+    "prebuild:android": "expo prebuild --platform android",
+
+    "doctor": "expo doctor",
+
     "web:dev": "cd web && npm run dev",
     "web:build": "cd web && npm run build",
     "web:start": "cd web && npm run start"
