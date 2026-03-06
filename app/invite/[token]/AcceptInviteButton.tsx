@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { getApiBase } from "@/lib/api-client"
 
 export default function AcceptInviteButton({ token }: { token: string }) {
   const router = useRouter()
@@ -13,8 +14,9 @@ export default function AcceptInviteButton({ token }: { token: string }) {
     setError(null)
 
     try {
-      const res = await fetch(`/api/invite/${token}/accept`, {
+      const res = await fetch(`${getApiBase()}/api/invite/${token}/accept`, {
         method: "POST",
+        credentials: 'include',
       })
 
       const data = await res.json()

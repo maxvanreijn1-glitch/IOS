@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useAuth } from "@/context/AuthContext"
+import { getApiBase } from "@/lib/api-client"
 import Link from "next/link"
 import { Users } from "lucide-react"
 
@@ -89,7 +90,7 @@ function ClientListInner({ orgId }: { orgId: string }) {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    fetch(`/api/organisations/${orgId}/clients`)
+    fetch(`${getApiBase()}/api/organisations/${orgId}/clients`, { credentials: 'include' })
       .then((r) => r.json())
       .then((data) => {
         if (data.error) setError(data.error)

@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { getApiBase } from "@/lib/api-client"
 
 export default function InviteControls({ initialLink }: { initialLink: string }) {
   const router = useRouter()
@@ -20,7 +21,7 @@ export default function InviteControls({ initialLink }: { initialLink: string })
     setGenerating(true)
     setGenerateError(null)
     try {
-      const res = await fetch("/api/invite", { method: "POST" })
+      const res = await fetch(`${getApiBase()}/api/invite`, { method: "POST", credentials: 'include' })
       const data = await res.json()
       if (res.ok && data.token) {
         setInviteLink(`${window.location.origin}/invite/${data.token}`)

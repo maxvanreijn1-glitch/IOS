@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
 
+const isStaticExport = process.env.NEXT_STATIC_EXPORT === "true";
+
 const nextConfig: NextConfig = {
-  /* config options here */
+  ...(isStaticExport && {
+    output: "export",
+    trailingSlash: true,
+  }),
 };
 
 export default nextConfig;

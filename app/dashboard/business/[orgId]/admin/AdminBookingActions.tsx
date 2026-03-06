@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Loader2, AlertCircle } from 'lucide-react';
+import { getApiBase } from '@/lib/api-client';
 
 interface Props {
   bookingId: string;
@@ -51,15 +52,17 @@ export default function AdminBookingActions({
           setLoading(false);
           return;
         }
-        const res = await fetch(`/api/bookings/${bookingId}/cancel`, {
+        const res = await fetch(`${getApiBase()}/api/bookings/${bookingId}/cancel`, {
           method: 'POST',
+          credentials: 'include',
         });
         if (!res.ok)
           throw new Error((await res.json()).error || 'Failed to cancel');
       } else {
-        const res = await fetch(`/api/bookings/${bookingId}`, {
+        const res = await fetch(`${getApiBase()}/api/bookings/${bookingId}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
           body: JSON.stringify({ status }),
         });
         if (!res.ok)

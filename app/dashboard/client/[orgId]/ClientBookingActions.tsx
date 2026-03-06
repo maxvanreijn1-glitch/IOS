@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { getApiBase } from '@/lib/api-client';
 
 interface Props {
   bookingId: string;
@@ -29,8 +30,9 @@ export default function ClientBookingActions({
     setError(null);
 
     try {
-      const res = await fetch(`/api/bookings/${bookingId}/${action}`, {
+      const res = await fetch(`${getApiBase()}/api/bookings/${bookingId}/${action}`, {
         method: 'POST',
+        credentials: 'include',
       });
 
       if (!res.ok) {

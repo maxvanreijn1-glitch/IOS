@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { getApiBase } from "@/lib/api-client"
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("")
@@ -15,9 +16,10 @@ export default function ForgotPasswordPage() {
     setLoading(true)
 
     try {
-      const res = await fetch("/api/auth/forgot-password", {
+      const res = await fetch(`${getApiBase()}/api/auth/forgot-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: 'include',
         body: JSON.stringify({ email }),
       })
 

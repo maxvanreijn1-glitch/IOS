@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
+import { getApiBase } from "@/lib/api-client"
 
 interface Member {
   userId: string
@@ -30,7 +31,7 @@ export default function BookingForm({
 
   useEffect(() => {
     if (!orgId) return
-    fetch(`/api/organisations/${orgId}/members`)
+    fetch(`${getApiBase()}/api/organisations/${orgId}/members`, { credentials: 'include' })
       .then((r) => r.json())
       .then((data) => {
         if (data.members) setMembers(data.members)
@@ -63,9 +64,10 @@ export default function BookingForm({
     const endTime = new Date(startTime.getTime() + duration * 60 * 1000)
 
     try {
-      const res = await fetch("/api/bookings", {
+      const res = await fetch(`${getApiBase()}/api/bookings`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: 'include',
         body: JSON.stringify({
           organisationId: orgId,
           memberId,
